@@ -1,0 +1,101 @@
+.common {
+    color: rgb(113, 54, 64);
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.header {
+    background-color: palevioletred;
+    color: white;
+    height: 100px;
+    line-height: 100px;
+    font-family: 'Georgia', 'Times New Roman', Times, serif;
+}
+
+.mainbody {
+    background-color: rgb(254, 240, 245);
+    text-align: center;
+    padding-bottom: 25px;
+    padding: 10px;
+    border: 5px solid pink;
+    margin: 10px;
+}
+
+.footer {
+    background-color: palevioletred;
+    color: white;
+    height: 25px;
+    line-height: 25px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+nav{
+    background-color: pink;
+    padding: 10px;
+    overflow: hidden;
+}
+
+nav a{
+    color: rgb(113, 54, 64);
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    float: left;
+}
+
+nav a:hover{
+    background-color: rgb(252, 207, 213);
+}
+
+.mainbody ol{
+    display: inline-block;
+    text-align: left;
+}
+
+.mainbody ul{
+    margin-left: 20px;
+    list-style-type: circle;
+}
+
+.mainbody ol > li{
+    font-style: italic;
+    font-weight: bold;
+}
+
+.mainbody ol li ul li{
+    font-style: normal;
+    font-weight: normal;
+}
+
+img{
+    display: block;
+    width: 35%;
+    margin: 20px auto;
+}
+
+.list-video{
+    text-align: center;
+    margin: 40px auto;
+}
+
+.list-video iframe{
+    width: 560px;
+    height: 315px;
+    border: 5px solid palevioletred;
+    border-radius: 8px;
+    max-width: 95%;
+}
+
+.tableau-section{
+    margin: 50px auto;
+    width: 95%;
+    max-width: 1000px;
+    padding-bottom: 60px;
+}
+
+.tableauPlaceholder{
+    margin: 0 auto;
+}
