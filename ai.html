@@ -26,6 +26,7 @@
         transform: translateX(-50%);
         font-size: 18px;
         z-index: 10;
+        width: 100%; /* Ensure buttons stay centered */
     }
 
     button {
@@ -35,6 +36,17 @@
         cursor: pointer;
         border: none;
         border-radius: 6px;
+        transition: opacity 0.2s;
+    }
+
+    button:hover {
+        opacity: 0.8;
+    }
+
+    /* Home button specific style */
+    .btn-home {
+        background-color: #555;
+        color: white;
     }
 
     #startScreen {
@@ -58,13 +70,14 @@
 </head>
 <body>
 
-<!-- START SCREEN -->
 <div id="startScreen">
     <h1>🚀 Spaceship Dodge</h1>
     <p>Select Difficulty</p>
     <button onclick="startGame(1.5)">🟢 Easy</button>
     <button onclick="startGame(2.5)">🟡 Medium</button>
     <button onclick="startGame(3.5)">🔴 Hard</button>
+    <br>
+    <button class="btn-home" onclick="goHome()">🏠 Back to Home</button>
 </div>
 
 <div id="ui">
@@ -73,6 +86,7 @@
     <div id="status">Status: Not Started</div>
     <button onclick="togglePause()">Pause / Resume</button>
     <button onclick="restartGame()">Restart</button>
+    <button class="btn-home" onclick="goHome()">Home</button>
 </div>
 
 <canvas id="gameCanvas"></canvas>
@@ -93,7 +107,6 @@ let gameOver = false;
 let paused = false;
 let gameStarted = false;
 
-// 🔥 difficulty multiplier (set by start screen)
 let difficulty = 1;
 
 const ship = {
@@ -106,7 +119,6 @@ const ship = {
 let asteroids = [];
 let boosters = [];
 
-// ASTEROIDS
 function createAsteroid() {
     return {
         x: Math.random() * canvas.width,
@@ -116,7 +128,6 @@ function createAsteroid() {
     };
 }
 
-// BOOSTERS
 function createBooster() {
     return {
         x: Math.random() * canvas.width,
@@ -126,7 +137,6 @@ function createBooster() {
     };
 }
 
-// SPAWN SYSTEM
 let asteroidInterval;
 let boosterInterval;
 let scoreInterval;
@@ -144,25 +154,24 @@ function startSpawning() {
         if (!gameOver && !paused) {
             score++;
             difficulty += 0.03;
-
             document.getElementById("score").textContent = "Score: " + score;
         }
     }, 1000);
 }
 
-// START GAME WITH DIFFICULTY
 function startGame(level) {
     difficulty = level;
-
     document.getElementById("startScreen").style.display = "none";
-
     gameStarted = true;
     document.getElementById("status").textContent = "Status: Running";
-
     startSpawning();
 }
 
-// INPUT
+// Navigation Function
+function goHome() {
+    window.location.href = "fromScratch.html";
+}
+
 document.addEventListener("keydown", e => {
     keys[e.key] = true;
     if (e.key === " ") togglePause();
@@ -170,10 +179,8 @@ document.addEventListener("keydown", e => {
 
 document.addEventListener("keyup", e => keys[e.key] = false);
 
-// PAUSE
 function togglePause() {
     if (gameOver || !gameStarted) return;
-
     paused = !paused;
     document.getElementById("status").textContent =
         "Status: " + (paused ? "Paused" : "Running");
@@ -182,7 +189,6 @@ function togglePause() {
 function update() {
     if (gameOver || paused || !gameStarted) return;
 
-    // ship movement
     if (keys["ArrowLeft"]) ship.x -= ship.speed;
     if (keys["ArrowRight"]) ship.x += ship.speed;
     if (keys["ArrowUp"]) ship.y -= ship.speed;
@@ -191,27 +197,19 @@ function update() {
     ship.x = Math.max(0, Math.min(canvas.width, ship.x));
     ship.y = Math.max(0, Math.min(canvas.height, ship.y));
 
-    // asteroids
     for (let a of asteroids) {
         a.y += a.speed;
-
         let dx = ship.x - a.x;
         let dy = ship.y - a.y;
         let dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist < a.size) {
-            endGame();
-        }
+        if (dist < a.size) endGame();
     }
 
-    // boosters
     for (let b of boosters) {
         b.y += b.speed;
-
         let dx = ship.x - b.x;
         let dy = ship.y - b.y;
         let dist = Math.sqrt(dx * dx + dy * dy);
-
         if (dist < b.size + 10) {
             score += 5;
             document.getElementById("score").textContent = "Score: " + score;
@@ -266,15 +264,12 @@ function loop() {
 
 function endGame() {
     gameOver = true;
-
     if (score > highScore) {
         highScore = score;
         localStorage.setItem("highScore", highScore);
     }
-
     document.getElementById("highScore").textContent = "High Score: " + highScore;
     document.getElementById("status").textContent = "Status: Game Over";
-
     setTimeout(() => {
         alert("Game Over! Your score: " + score);
     }, 100);
@@ -283,19 +278,16 @@ function endGame() {
 function restartGame() {
     score = 0;
     difficulty = 1;
-
     asteroids = [];
     boosters = [];
     gameOver = false;
     paused = false;
     gameStarted = false;
-
     ship.x = canvas.width / 2;
     ship.y = canvas.height - 100;
 
     document.getElementById("score").textContent = "Score: 0";
     document.getElementById("status").textContent = "Status: Not Started";
-
     document.getElementById("startScreen").style.display = "flex";
 
     clearInterval(asteroidInterval);
